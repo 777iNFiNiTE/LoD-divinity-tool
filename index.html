@@ -17,26 +17,26 @@
   button { transition: background 0.12s ease, filter 0.12s ease, transform 0.06s ease; }
   button:active { transform: scale(0.97); }
 
-  header { text-align: center; padding: 18px 12px 8px; }
+  header { text-align: center; padding: 12px 12px 4px; }
   header h1 {
     margin: 0; font-size: 23px; letter-spacing: 1.5px; font-weight: 700;
     background: linear-gradient(180deg,#f5e6b8,#c9a24a);
     -webkit-background-clip: text; background-clip: text; color: transparent;
     text-shadow: 0 0 20px rgba(201,162,74,0.3);
   }
-  .summary { text-align: center; font-size: 12.5px; color: #b9a8d8; margin-top: 5px; letter-spacing: 0.2px; }
+  .summary { text-align: center; font-size: 12px; color: #b9a8d8; margin-top: 3px; letter-spacing: 0.2px; }
 
   .config-bar {
-    max-width: 620px; margin: 12px auto 0; padding: 14px;
-    display: flex; flex-wrap: wrap; gap: 9px; align-items: center; justify-content: center;
+    max-width: 620px; margin: 8px auto 0; padding: 10px;
+    display: flex; flex-wrap: wrap; gap: 7px; align-items: center; justify-content: center;
     background: rgba(255,255,255,0.025);
     border: 1px solid rgba(201,162,74,0.18);
-    border-radius: 14px;
+    border-radius: 12px;
   }
   .config-bar select, .config-bar input[type=text] {
     background: rgba(255,255,255,0.07);
     border: 1px solid rgba(201,162,74,0.35);
-    color: #f0e6c8; border-radius: 9px; padding: 10px 12px; font-size: 13.5px;
+    color: #f0e6c8; border-radius: 9px; padding: 8px 11px; font-size: 13px;
   }
   .config-bar input[type=text]::placeholder { color: rgba(240,230,200,0.4); }
   .config-bar input[type=text]:focus { outline: none; border-color: #c9a24a; background: rgba(255,255,255,0.1); }
@@ -45,9 +45,9 @@
   .cfg-btn {
     background: rgba(255,255,255,0.06);
     border: 1px solid rgba(201,162,74,0.35);
-    color: #d8cbee; padding: 10px 14px; border-radius: 10px;
-    font-size: 13.5px; cursor: pointer; white-space: nowrap;
-    min-height: 42px;
+    color: #d8cbee; padding: 8px 12px; border-radius: 9px;
+    font-size: 13px; cursor: pointer; white-space: nowrap;
+    min-height: 38px;
   }
   .cfg-btn:hover { background: rgba(255,255,255,0.1); }
   .cfg-btn.primary {
@@ -62,16 +62,16 @@
   }
   .cfg-status { font-size: 11px; color: #8fd39a; text-align:center; min-height: 14px; margin-top:2px; }
 
-  .sections { padding: 4px 10px 30px; }
+  .sections { padding: 2px 10px 20px; }
   .group-section { max-width: 640px; margin: 0 auto; position: relative; }
   .connector {
-    width: 2px; height: 10px; background: linear-gradient(180deg, rgba(201,162,74,0.5), rgba(201,162,74,0.1));
+    width: 2px; height: 6px; background: linear-gradient(180deg, rgba(201,162,74,0.5), rgba(201,162,74,0.1));
     margin: 0 auto;
   }
 
-  .board-wrap { padding: 6px 10px 30px; }
+  .board-wrap { padding: 4px 10px 20px; }
   .board {
-    position: relative; width: 100%; max-width: 640px; margin: 0 auto; aspect-ratio: 1 / 1.55;
+    position: relative; width: 100%; max-width: 640px; margin: 0 auto; aspect-ratio: 1 / 1.42;
     border-radius: 16px; background: radial-gradient(circle at 50% 10%, rgba(120,90,200,0.12), transparent 60%);
     border: 1px solid rgba(255,255,255,0.05);
   }
@@ -93,10 +93,10 @@
   .count-label { font-size: 9px; font-weight: 700; min-width: 20px; text-align: center; color: #78ff9a; text-shadow: 0 0 4px rgba(0,0,0,0.8); }
   .count-label.maxed { color: #ffe27a; }
 
-  .controls-bar { max-width: 620px; margin: 6px auto 4px; display: flex; justify-content: center; gap: 8px; padding: 0 14px; flex-wrap: wrap; }
+  .controls-bar { max-width: 620px; margin: 4px auto 2px; display: flex; justify-content: center; gap: 7px; padding: 0 14px; flex-wrap: wrap; }
   .controls-bar button {
     background: rgba(255,255,255,0.06); border: 1px solid rgba(201,162,74,0.3); color: #d8cbee;
-    padding: 10px 14px; border-radius: 10px; font-size: 13px; cursor: pointer; min-height: 42px;
+    padding: 8px 12px; border-radius: 9px; font-size: 12.5px; cursor: pointer; min-height: 38px;
   }
   .controls-bar button:hover { background: rgba(255,255,255,0.1); }
   #importFileInput { display: none; }
@@ -106,12 +106,11 @@
     background: linear-gradient(180deg, #140b26 0%, #140b26 85%, rgba(20,11,38,0.97) 100%);
     border-bottom: 1px solid rgba(201,162,74,0.25);
     box-shadow: 0 8px 18px rgba(0,0,0,0.45);
-    padding-bottom: 8px;
+    padding-bottom: 6px;
   }
 
   .content-area { max-width: 640px; margin: 0 auto; padding: 0 10px; }
 
-  .cfg-more.hidden { display: none; }
   #toggleBuildsBtn { display: flex; align-items: center; gap: 6px; justify-content: center; }
   #toggleBuildsBtn .count-chip {
     background: rgba(201,162,74,0.3); border-radius: 20px; padding: 1px 7px; font-size: 11px;
@@ -124,15 +123,15 @@
   }
   .builds-overlay.hidden { display: none; }
   .builds-panel {
-    width: 100%; max-width: 460px; margin-top: 12px;
+    width: 100%; max-width: 460px; margin-top: 8px;
     background: radial-gradient(ellipse at top, #241640 0%, #150c28 100%);
-    border: 1px solid rgba(201,162,74,0.4); border-radius: 16px;
+    border: 1px solid rgba(201,162,74,0.4); border-radius: 14px;
     box-shadow: 0 14px 40px rgba(0,0,0,0.6), 0 0 24px rgba(120,90,200,0.15);
-    padding: 16px; max-height: calc(100vh - 40px); display: flex; flex-direction: column;
+    padding: 12px; max-height: calc(100vh - 32px); display: flex; flex-direction: column;
   }
   .builds-panel-header {
     display: flex; align-items: center; justify-content: space-between;
-    gap: 8px; margin-bottom: 12px; padding-bottom: 12px;
+    gap: 8px; margin-bottom: 8px; padding-bottom: 8px;
     border-bottom: 1px solid rgba(201,162,74,0.2);
   }
   .builds-panel-header h3 {
@@ -164,10 +163,10 @@
     background: rgba(255,255,255,0.06); color: #d8cbee; border-color: rgba(201,162,74,0.3);
     font-size: 18px;
   }
-  .profile-list { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
+  .profile-list { display: flex; flex-direction: column; gap: 6px; overflow-y: auto; }
   .profile-item {
-    display: flex; align-items: center; gap: 8px;
-    min-height: 56px; padding: 10px 10px; border-radius: 12px;
+    display: flex; align-items: center; gap: 7px;
+    min-height: 50px; padding: 8px 9px; border-radius: 11px;
     border: 1px solid rgba(201,162,74,0.15); background: rgba(255,255,255,0.03);
     transition: background 0.1s;
   }
@@ -191,27 +190,27 @@
   .modal-overlay {
     position: fixed; inset: 0; background: rgba(5,3,10,0.72); backdrop-filter: blur(2px);
     display: flex; align-items: center; justify-content: center;
-    z-index: 1000; padding: 20px;
+    z-index: 1000; padding: 16px;
   }
   .modal-overlay.hidden { display: none; }
   .modal-box {
     background: radial-gradient(ellipse at top, #241640 0%, #150c28 100%);
     border: 1px solid rgba(201,162,74,0.45); border-radius: 14px;
-    max-width: 340px; width: 100%; padding: 20px;
+    max-width: 340px; width: 100%; padding: 16px;
     box-shadow: 0 0 0 1px rgba(0,0,0,0.4), 0 14px 40px rgba(0,0,0,0.6), 0 0 24px rgba(120,90,200,0.15);
   }
   .modal-title {
-    font-size: 15px; font-weight: 700; letter-spacing: 0.3px; margin-bottom: 8px;
+    font-size: 15px; font-weight: 700; letter-spacing: 0.3px; margin-bottom: 6px;
     background: linear-gradient(180deg,#f5e6b8,#c9a24a);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
   .modal-box p {
-    margin: 0 0 18px; font-size: 13.5px; color: #e4d9f5; line-height: 1.45;
+    margin: 0 0 14px; font-size: 13.5px; color: #e4d9f5; line-height: 1.45;
   }
   .modal-box p .modal-target-name { color: #ffe27a; font-weight: 700; }
   .modal-box input[type=text] {
     width: 100%; background: rgba(255,255,255,0.07); border: 1px solid rgba(201,162,74,0.35);
-    color: #f0e6c8; border-radius: 8px; padding: 9px 10px; font-size: 14px; margin-bottom: 16px;
+    color: #f0e6c8; border-radius: 8px; padding: 9px 10px; font-size: 14px; margin-bottom: 12px;
   }
   .modal-actions { display: flex; justify-content: flex-end; gap: 10px; }
   .modal-actions button {
@@ -227,16 +226,16 @@
 
   /* ---- Mobile tightening: keep the sticky panel compact so it doesn't eat the board area ---- */
   @media (max-width: 480px) {
-    header { padding: 10px 10px 4px; }
-    header h1 { font-size: 19px; }
-    .summary { font-size: 11.5px; }
-    .config-bar { margin-top: 6px; }
-    .cfg-row { gap: 6px; }
-    .cfg-btn { padding: 9px 10px; font-size: 12.5px; min-height: 40px; }
-    .enter-btn { padding: 9px 12px; }
-    .controls-bar { margin: 2px auto 2px; gap: 6px; }
-    .controls-bar button { padding: 8px 10px; font-size: 11.5px; min-height: 38px; }
-    .board { aspect-ratio: 1 / 1.5; }
+    header { padding: 8px 10px 3px; }
+    header h1 { font-size: 18px; }
+    .summary { font-size: 11px; }
+    .config-bar { margin-top: 5px; padding: 8px; }
+    .cfg-row { gap: 5px; }
+    .cfg-btn { padding: 7px 9px; font-size: 12px; min-height: 36px; }
+    .enter-btn { padding: 7px 10px; }
+    .controls-bar { margin: 3px auto 2px; gap: 5px; }
+    .controls-bar button { padding: 7px 9px; font-size: 11px; min-height: 36px; }
+    .board { aspect-ratio: 1 / 1.42; }
     .node { width: 12%; }
     .count-row button { width: 15px; height: 15px; }
   }
@@ -261,13 +260,10 @@
     <button class="cfg-btn" id="toggleBuildsBtn">
       Builds <span class="count-chip" id="buildsCountChip">0</span>
     </button>
-    <button class="cfg-btn" id="moreToggleBtn">More &#9662;</button>
   </div>
-  <div class="cfg-more hidden" id="cfgMore">
-    <div class="cfg-row">
-      <button class="cfg-btn" id="newConfigBtn">New Configuration</button>
-      <button class="cfg-btn" id="exportBtn">Export Current</button>
-    </div>
+  <div class="cfg-row">
+    <button class="cfg-btn" id="newConfigBtn">New Configuration</button>
+    <button class="cfg-btn" id="exportBtn">Export Current</button>
   </div>
   <div class="cfg-status" id="cfgStatus"></div>
 </div>
@@ -769,13 +765,6 @@ document.getElementById('closeBuildsBtn').onclick = closeBuildsOverlay;
 document.getElementById('buildsOverlay').addEventListener('click', (e) => {
   if (e.target.id === 'buildsOverlay') closeBuildsOverlay();
 });
-
-document.getElementById('moreToggleBtn').onclick = () => {
-  const el = document.getElementById('cfgMore');
-  el.classList.toggle('hidden');
-  document.getElementById('moreToggleBtn').innerHTML = el.classList.contains('hidden') ? 'More &#9662;' : 'Less &#9652;';
-  updatePanelHeightVar();
-};
 
 document.getElementById('importBtn').onclick = () => {
   document.getElementById('importFileInput').click();
