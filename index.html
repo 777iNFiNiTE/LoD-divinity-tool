@@ -98,26 +98,37 @@
     padding-bottom: 8px;
   }
 
-  .app-layout {
-    display: flex; align-items: flex-start; gap: 14px;
-    max-width: 900px; margin: 0 auto; padding: 10px 10px 0;
+  .content-area { max-width: 640px; margin: 0 auto; padding: 0 10px; }
+
+  .cfg-more.hidden { display: none; }
+  #toggleBuildsBtn { display: flex; align-items: center; gap: 6px; justify-content: center; }
+  #toggleBuildsBtn .count-chip {
+    background: rgba(201,162,74,0.3); border-radius: 20px; padding: 1px 7px; font-size: 11px;
   }
-  .profile-sidebar {
-    width: 230px; flex: 0 0 230px;
-    position: sticky; top: calc(var(--panel-h, 0px) + 10px);
-    max-height: calc(100vh - var(--panel-h, 0px) - 20px);
-    overflow-y: auto;
-    background: rgba(255,255,255,0.03); border: 1px solid rgba(201,162,74,0.2);
-    border-radius: 12px; padding: 10px;
+
+  .builds-overlay {
+    position: fixed; inset: 0; background: rgba(5,3,10,0.72); backdrop-filter: blur(2px);
+    z-index: 900; display: flex; align-items: flex-start; justify-content: center;
+    padding: 16px; overflow-y: auto;
   }
-  .sidebar-header {
+  .builds-overlay.hidden { display: none; }
+  .builds-panel {
+    width: 100%; max-width: 460px; margin-top: 12px;
+    background: radial-gradient(ellipse at top, #241640 0%, #150c28 100%);
+    border: 1px solid rgba(201,162,74,0.4); border-radius: 16px;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.6), 0 0 24px rgba(120,90,200,0.15);
+    padding: 16px; max-height: calc(100vh - 40px); display: flex; flex-direction: column;
+  }
+  .builds-panel-header {
     display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 10px; gap: 8px;
+    gap: 8px; margin-bottom: 12px;
   }
-  .sidebar-header h3 {
-    margin: 0; font-size: 13px; letter-spacing: 0.5px; color: #f0e0c0;
-    text-transform: uppercase; opacity: 0.85;
+  .builds-panel-header h3 {
+    margin: 0; font-size: 15px; letter-spacing: 0.4px;
+    background: linear-gradient(180deg,#f5e6b8,#c9a24a);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
   }
+  .builds-panel-header-actions { display: flex; gap: 8px; }
   .icon-btn {
     width: 42px; height: 42px; flex: 0 0 auto;
     border-radius: 11px; border: 1px solid rgba(201,162,74,0.4);
@@ -130,14 +141,18 @@
     width: 38px; height: 38px; font-size: 16px; border-radius: 9px;
     background: rgba(255,255,255,0.07); color: #d8cbee; border-color: rgba(201,162,74,0.3);
   }
-  .profile-list { display: flex; flex-direction: column; gap: 8px; }
+  .icon-btn.close-btn {
+    background: rgba(255,255,255,0.06); color: #d8cbee; border-color: rgba(201,162,74,0.3);
+    font-size: 18px;
+  }
+  .profile-list { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
   .profile-item {
     display: flex; align-items: center; gap: 8px;
     min-height: 56px; padding: 10px 10px; border-radius: 12px;
-    border: 1px solid rgba(201,162,74,0.15); background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(201,162,74,0.15); background: rgba(255,255,255,0.03);
     transition: background 0.1s;
   }
-  .profile-item:hover { background: rgba(255,255,255,0.07); }
+  .profile-item:hover { background: rgba(255,255,255,0.08); }
   .profile-item.active {
     background: linear-gradient(180deg,#7a5cc9,#4a2f8f); border-color: #c9a24a;
   }
@@ -149,19 +164,6 @@
   .profile-item.active .p-name { color: #fff; }
   .profile-item .p-ts { font-size: 11.5px; color: #9f8bc9; margin-top: 3px; }
   .profile-item.active .p-ts { color: #e8dcff; }
-  .content-area { flex: 1 1 auto; min-width: 0; }
-
-  @media (max-width: 720px) {
-    .app-layout { flex-direction: column; }
-    .profile-sidebar {
-      width: 100%; flex: none; position: static; max-height: none;
-    }
-    .profile-list {
-      flex-direction: row; overflow-x: auto; padding-bottom: 4px;
-      -webkit-overflow-scrolling: touch;
-    }
-    .profile-item { flex: 0 0 auto; min-width: 190px; }
-  }
 
   .modal-overlay {
     position: fixed; inset: 0; background: rgba(5,3,10,0.72); backdrop-filter: blur(2px);
@@ -199,6 +201,22 @@
     background: linear-gradient(180deg,#d9635a,#8a2a1f); color: #fff; font-weight: 600;
     border-color: rgba(255,140,120,0.5);
   }
+
+  /* ---- Mobile tightening: keep the sticky panel compact so it doesn't eat the board area ---- */
+  @media (max-width: 480px) {
+    header { padding: 10px 10px 4px; }
+    header h1 { font-size: 19px; }
+    .summary { font-size: 11.5px; }
+    .config-bar { margin-top: 6px; }
+    .cfg-row { gap: 6px; }
+    .cfg-btn { padding: 9px 10px; font-size: 12.5px; min-height: 40px; }
+    .enter-btn { padding: 9px 12px; }
+    .controls-bar { margin: 2px auto 2px; gap: 6px; }
+    .controls-bar button { padding: 8px 10px; font-size: 11.5px; min-height: 38px; }
+    .board { aspect-ratio: 1 / 1.5; }
+    .node { width: 12%; }
+    .count-row button { width: 15px; height: 15px; }
+  }
 </style>
 </head>
 <body>
@@ -217,33 +235,45 @@
   <div class="name-warning" id="nameWarning"></div>
   <div class="cfg-row">
     <button class="cfg-btn primary" id="saveConfigBtn">Save</button>
-    <button class="cfg-btn" id="newConfigBtn">New Configuration</button>
-    <button class="cfg-btn danger" id="deleteConfigBtn">Delete</button>
+    <button class="cfg-btn" id="toggleBuildsBtn">
+      Builds <span class="count-chip" id="buildsCountChip">0</span>
+    </button>
+    <button class="cfg-btn" id="moreToggleBtn">More &#9662;</button>
   </div>
-  <div class="cfg-row">
-    <button class="cfg-btn" id="exportBtn">Export Current</button>
+  <div class="cfg-more hidden" id="cfgMore">
+    <div class="cfg-row">
+      <button class="cfg-btn" id="newConfigBtn">New Configuration</button>
+      <button class="cfg-btn danger" id="deleteConfigBtn">Delete</button>
+    </div>
+    <div class="cfg-row">
+      <button class="cfg-btn" id="exportBtn">Export Current</button>
+    </div>
   </div>
   <div class="cfg-status" id="cfgStatus"></div>
 </div>
 
 <div class="controls-bar">
-  <button id="maxAllBtn">Max Entire Path</button>
-  <button id="resetAllBtn">Reset Entire Path</button>
+  <button id="maxAllBtn">Max All</button>
+  <button id="resetAllBtn">Reset All</button>
   <button id="randomizeBtn">Randomize</button>
 </div>
 </div>
 
-<div class="app-layout">
-  <aside class="profile-sidebar">
-    <div class="sidebar-header">
+<div class="content-area">
+  <div class="sections" id="sections"></div>
+</div>
+
+<div class="builds-overlay hidden" id="buildsOverlay">
+  <div class="builds-panel">
+    <div class="builds-panel-header">
       <h3>Saved Builds</h3>
-      <button class="icon-btn" id="importBtn" title="Import a build">+</button>
-      <input type="file" id="importFileInput" accept="application/json">
+      <div class="builds-panel-header-actions">
+        <button class="icon-btn" id="importBtn" title="Import a build">+</button>
+        <input type="file" id="importFileInput" accept="application/json">
+        <button class="icon-btn close-btn" id="closeBuildsBtn" title="Close">&#10005;</button>
+      </div>
     </div>
     <div class="profile-list" id="profileList"></div>
-  </aside>
-  <div class="content-area">
-    <div class="sections" id="sections"></div>
   </div>
 </div>
 
@@ -447,6 +477,10 @@ function renderProfileList() {
     const tb = allConfigs[b].updatedAt || '';
     return tb.localeCompare(ta); // most recent first
   });
+
+  const chip = document.getElementById('buildsCountChip');
+  if (chip) chip.textContent = names.length;
+
   names.forEach(name => {
     const item = document.createElement('div');
     item.className = 'profile-item' + (name === activeName ? ' active' : '');
@@ -461,12 +495,16 @@ function renderProfileList() {
     tsEl.textContent = formatTs(allConfigs[name].updatedAt);
     main.appendChild(nameEl);
     main.appendChild(tsEl);
+    // Selecting a build is entirely separate from exporting one -- this handler
+    // only ever runs from a tap inside .profile-item-main, never from the export button.
     main.onclick = () => {
-      if (name === activeName) return;
-      activeName = name;
-      state = Object.assign(blankState(), allConfigs[name].state || {});
-      persistConfigs();
-      renderAll();
+      if (name !== activeName) {
+        activeName = name;
+        state = Object.assign(blankState(), allConfigs[name].state || {});
+        persistConfigs();
+        renderAll();
+      }
+      closeBuildsOverlay();
     };
     item.appendChild(main);
 
@@ -474,6 +512,8 @@ function renderProfileList() {
     exportItemBtn.className = 'icon-btn small';
     exportItemBtn.title = 'Export "' + name + '"';
     exportItemBtn.textContent = '\u2913'; // export/download glyph
+    // Detached from selection: stops the click from ever reaching profile-item-main,
+    // and never touches activeName/state -- exporting never changes what's selected.
     exportItemBtn.onclick = (e) => {
       e.stopPropagation();
       exportStateAsFile(name, allConfigs[name].state);
@@ -482,6 +522,15 @@ function renderProfileList() {
 
     list.appendChild(item);
   });
+}
+
+function openBuildsOverlay() {
+  document.getElementById('buildsOverlay').classList.remove('hidden');
+  document.body.style.overflow = 'hidden';
+}
+function closeBuildsOverlay() {
+  document.getElementById('buildsOverlay').classList.add('hidden');
+  document.body.style.overflow = '';
 }
 
 function checkDuplicateName() {
@@ -664,6 +713,19 @@ document.getElementById('deleteConfigBtn').onclick = async () => {
 
 document.getElementById('exportBtn').onclick = () => {
   exportStateAsFile(activeName, state);
+};
+
+document.getElementById('toggleBuildsBtn').onclick = openBuildsOverlay;
+document.getElementById('closeBuildsBtn').onclick = closeBuildsOverlay;
+document.getElementById('buildsOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'buildsOverlay') closeBuildsOverlay();
+});
+
+document.getElementById('moreToggleBtn').onclick = () => {
+  const el = document.getElementById('cfgMore');
+  el.classList.toggle('hidden');
+  document.getElementById('moreToggleBtn').innerHTML = el.classList.contains('hidden') ? 'More &#9662;' : 'Less &#9652;';
+  updatePanelHeightVar();
 };
 
 document.getElementById('importBtn').onclick = () => {
