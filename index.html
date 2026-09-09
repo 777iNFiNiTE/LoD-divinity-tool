@@ -71,11 +71,11 @@
 
   .board-wrap { padding: 4px 10px 20px; }
   .board {
-    position: relative; width: 100%; max-width: 640px; margin: 0 auto; aspect-ratio: 1 / 1.42;
+    position: relative; width: 100%; max-width: 640px; margin: 0 auto; aspect-ratio: 1 / 1.68;
     border-radius: 16px; background: radial-gradient(circle at 50% 10%, rgba(120,90,200,0.12), transparent 60%);
     border: 1px solid rgba(255,255,255,0.05);
   }
-  .node { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; width: 11%; }
+  .node { position: absolute; transform: translate(-50%, -50%); display: flex; flex-direction: column; align-items: center; width: 13%; }
   .icon-ring {
     width: 100%; aspect-ratio: 1/1; border-radius: 50%; overflow: hidden;
     border: 2px solid #c9a24a; box-shadow: 0 0 10px rgba(201,162,74,0.35), inset 0 0 8px rgba(0,0,0,0.5);
@@ -83,14 +83,15 @@
   }
   .icon-ring img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .icon-ring.maxed { border-color: #6dff8a; box-shadow: 0 0 14px rgba(109,255,138,0.6), inset 0 0 8px rgba(0,0,0,0.5); }
-  .count-row { display: flex; align-items: center; gap: 2px; margin-top: 2px; }
+  .count-row { display: flex; align-items: center; gap: 3px; margin-top: 4px; }
   .count-row button {
-    width: 14px; height: 14px; border-radius: 3px; border: 1px solid rgba(201,162,74,0.5);
-    background: rgba(255,255,255,0.08); color: #f0e6c8; font-size: 10px; line-height: 1; padding: 0; cursor: pointer; user-select: none;
+    width: 22px; height: 22px; border-radius: 6px; border: 1px solid rgba(201,162,74,0.5);
+    background: rgba(255,255,255,0.1); color: #f0e6c8; font-size: 15px; font-weight: 700;
+    line-height: 1; padding: 0; cursor: pointer; user-select: none;
   }
-  .count-row button:active { background: rgba(201,162,74,0.4); }
+  .count-row button:active { background: rgba(201,162,74,0.45); }
   .count-row button:disabled { opacity: 0.25; cursor: default; }
-  .count-label { font-size: 9px; font-weight: 700; min-width: 20px; text-align: center; color: #78ff9a; text-shadow: 0 0 4px rgba(0,0,0,0.8); }
+  .count-label { font-size: 11px; font-weight: 700; min-width: 26px; text-align: center; color: #78ff9a; text-shadow: 0 0 4px rgba(0,0,0,0.8); }
   .count-label.maxed { color: #ffe27a; }
 
   .controls-bar { max-width: 620px; margin: 4px auto 2px; display: flex; justify-content: center; gap: 7px; padding: 0 14px; flex-wrap: wrap; }
@@ -235,9 +236,11 @@
     .enter-btn { padding: 7px 10px; }
     .controls-bar { margin: 3px auto 2px; gap: 5px; }
     .controls-bar button { padding: 7px 9px; font-size: 11px; min-height: 36px; }
-    .board { aspect-ratio: 1 / 1.42; }
-    .node { width: 12%; }
-    .count-row button { width: 15px; height: 15px; }
+    .board { aspect-ratio: 1 / 1.75; }
+    .node { width: 14%; }
+    .count-row { gap: 4px; margin-top: 5px; }
+    .count-row button { width: 24px; height: 24px; font-size: 16px; }
+    .count-label { font-size: 11.5px; min-width: 28px; }
   }
 </style>
 </head>
@@ -264,6 +267,8 @@
   <div class="cfg-row">
     <button class="cfg-btn" id="newConfigBtn">New Configuration</button>
     <button class="cfg-btn" id="exportBtn">Export Current</button>
+    <button class="cfg-btn" id="importBtn">Import</button>
+    <input type="file" id="importFileInput" accept="application/json">
   </div>
   <div class="cfg-status" id="cfgStatus"></div>
 </div>
@@ -284,8 +289,6 @@
     <div class="builds-panel-header">
       <h3>Saved Builds</h3>
       <div class="builds-panel-header-actions">
-        <button class="icon-btn wide" id="importBtn" title="Import a build">Import</button>
-        <input type="file" id="importFileInput" accept="application/json">
         <button class="icon-btn close-btn" id="closeBuildsBtn" title="Close">&#10005;</button>
       </div>
     </div>
