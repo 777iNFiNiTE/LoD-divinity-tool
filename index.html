@@ -13,24 +13,33 @@
     color: #fff;
     min-height: 100vh;
   }
-  header { text-align: center; padding: 16px 12px 6px; }
+  button, input { font-family: inherit; }
+  button { transition: background 0.12s ease, filter 0.12s ease, transform 0.06s ease; }
+  button:active { transform: scale(0.97); }
+
+  header { text-align: center; padding: 18px 12px 8px; }
   header h1 {
-    margin: 0; font-size: 22px; letter-spacing: 1px;
+    margin: 0; font-size: 23px; letter-spacing: 1.5px; font-weight: 700;
     background: linear-gradient(180deg,#f5e6b8,#c9a24a);
     -webkit-background-clip: text; background-clip: text; color: transparent;
     text-shadow: 0 0 20px rgba(201,162,74,0.3);
   }
-  .summary { text-align: center; font-size: 13px; color: #b9a8d8; margin-top: 4px; }
+  .summary { text-align: center; font-size: 12.5px; color: #b9a8d8; margin-top: 5px; letter-spacing: 0.2px; }
 
   .config-bar {
-    max-width: 640px; margin: 10px auto 0; padding: 0 10px;
-    display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center;
+    max-width: 620px; margin: 12px auto 0; padding: 14px;
+    display: flex; flex-wrap: wrap; gap: 9px; align-items: center; justify-content: center;
+    background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(201,162,74,0.18);
+    border-radius: 14px;
   }
   .config-bar select, .config-bar input[type=text] {
     background: rgba(255,255,255,0.07);
     border: 1px solid rgba(201,162,74,0.35);
-    color: #f0e6c8; border-radius: 8px; padding: 7px 9px; font-size: 13px;
+    color: #f0e6c8; border-radius: 9px; padding: 10px 12px; font-size: 13.5px;
   }
+  .config-bar input[type=text]::placeholder { color: rgba(240,230,200,0.4); }
+  .config-bar input[type=text]:focus { outline: none; border-color: #c9a24a; background: rgba(255,255,255,0.1); }
   .config-bar input[type=text] { flex: 1 1 140px; min-width: 100px; }
   .config-bar select { max-width: 160px; }
   .cfg-btn {
@@ -40,6 +49,7 @@
     font-size: 13.5px; cursor: pointer; white-space: nowrap;
     min-height: 42px;
   }
+  .cfg-btn:hover { background: rgba(255,255,255,0.1); }
   .cfg-btn.primary {
     background: linear-gradient(180deg,#7a5cc9,#4a2f8f);
     border-color: #c9a24a; color: #fff; font-weight: 600;
@@ -83,11 +93,12 @@
   .count-label { font-size: 9px; font-weight: 700; min-width: 20px; text-align: center; color: #78ff9a; text-shadow: 0 0 4px rgba(0,0,0,0.8); }
   .count-label.maxed { color: #ffe27a; }
 
-  .controls-bar { max-width: 640px; margin: 4px auto 4px; display: flex; justify-content: center; gap: 10px; padding: 0 10px; flex-wrap: wrap; }
+  .controls-bar { max-width: 620px; margin: 6px auto 4px; display: flex; justify-content: center; gap: 8px; padding: 0 14px; flex-wrap: wrap; }
   .controls-bar button {
     background: rgba(255,255,255,0.06); border: 1px solid rgba(201,162,74,0.3); color: #d8cbee;
     padding: 10px 14px; border-radius: 10px; font-size: 13px; cursor: pointer; min-height: 42px;
   }
+  .controls-bar button:hover { background: rgba(255,255,255,0.1); }
   #importFileInput { display: none; }
 
   .ui-panel {
@@ -121,14 +132,15 @@
   }
   .builds-panel-header {
     display: flex; align-items: center; justify-content: space-between;
-    gap: 8px; margin-bottom: 12px;
+    gap: 8px; margin-bottom: 12px; padding-bottom: 12px;
+    border-bottom: 1px solid rgba(201,162,74,0.2);
   }
   .builds-panel-header h3 {
-    margin: 0; font-size: 15px; letter-spacing: 0.4px;
+    margin: 0; font-size: 16px; font-weight: 700; letter-spacing: 0.4px;
     background: linear-gradient(180deg,#f5e6b8,#c9a24a);
     -webkit-background-clip: text; background-clip: text; color: transparent;
   }
-  .builds-panel-header-actions { display: flex; gap: 8px; }
+  .builds-panel-header-actions { display: flex; gap: 8px; align-items: center; }
   .icon-btn {
     width: 42px; height: 42px; flex: 0 0 auto;
     border-radius: 11px; border: 1px solid rgba(201,162,74,0.4);
@@ -141,6 +153,13 @@
     width: 38px; height: 38px; font-size: 16px; border-radius: 9px;
     background: rgba(255,255,255,0.07); color: #d8cbee; border-color: rgba(201,162,74,0.3);
   }
+  .icon-btn.wide {
+    width: auto; padding: 0 16px; font-size: 13.5px; font-weight: 600; letter-spacing: 0.2px;
+  }
+  .icon-btn.danger-icon {
+    background: rgba(217,99,90,0.12); color: #ffb3a8; border-color: rgba(217,99,90,0.4);
+  }
+  .icon-btn.danger-icon:active { background: rgba(217,99,90,0.3); }
   .icon-btn.close-btn {
     background: rgba(255,255,255,0.06); color: #d8cbee; border-color: rgba(201,162,74,0.3);
     font-size: 18px;
@@ -164,6 +183,10 @@
   .profile-item.active .p-name { color: #fff; }
   .profile-item .p-ts { font-size: 11.5px; color: #9f8bc9; margin-top: 3px; }
   .profile-item.active .p-ts { color: #e8dcff; }
+  .p-active-badge {
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.4px; text-transform: uppercase;
+    color: #ffe27a; margin-top: 3px;
+  }
 
   .modal-overlay {
     position: fixed; inset: 0; background: rgba(5,3,10,0.72); backdrop-filter: blur(2px);
@@ -243,9 +266,6 @@
   <div class="cfg-more hidden" id="cfgMore">
     <div class="cfg-row">
       <button class="cfg-btn" id="newConfigBtn">New Configuration</button>
-      <button class="cfg-btn danger" id="deleteConfigBtn">Delete</button>
-    </div>
-    <div class="cfg-row">
       <button class="cfg-btn" id="exportBtn">Export Current</button>
     </div>
   </div>
@@ -253,9 +273,9 @@
 </div>
 
 <div class="controls-bar">
-  <button id="maxAllBtn">Max All</button>
-  <button id="resetAllBtn">Reset All</button>
-  <button id="randomizeBtn">Randomize</button>
+  <button id="maxAllBtn">&#9889; Max All</button>
+  <button id="resetAllBtn">&#8635; Reset All</button>
+  <button id="randomizeBtn">&#127922; Randomize</button>
 </div>
 </div>
 
@@ -268,7 +288,7 @@
     <div class="builds-panel-header">
       <h3>Saved Builds</h3>
       <div class="builds-panel-header-actions">
-        <button class="icon-btn" id="importBtn" title="Import a build">+</button>
+        <button class="icon-btn wide" id="importBtn" title="Import a build">Import</button>
         <input type="file" id="importFileInput" accept="application/json">
         <button class="icon-btn close-btn" id="closeBuildsBtn" title="Close">&#10005;</button>
       </div>
@@ -495,6 +515,12 @@ function renderProfileList() {
     tsEl.textContent = formatTs(allConfigs[name].updatedAt);
     main.appendChild(nameEl);
     main.appendChild(tsEl);
+    if (name === activeName) {
+      const badge = document.createElement('div');
+      badge.className = 'p-active-badge';
+      badge.textContent = '\u2713 Currently loaded';
+      main.appendChild(badge);
+    }
     // Selecting a build is entirely separate from exporting one -- this handler
     // only ever runs from a tap inside .profile-item-main, never from the export button.
     main.onclick = () => {
@@ -509,9 +535,9 @@ function renderProfileList() {
     item.appendChild(main);
 
     const exportItemBtn = document.createElement('button');
-    exportItemBtn.className = 'icon-btn small';
+    exportItemBtn.className = 'icon-btn small wide';
     exportItemBtn.title = 'Export "' + name + '"';
-    exportItemBtn.textContent = '\u2913'; // export/download glyph
+    exportItemBtn.textContent = '\u2b07 Export'; // download arrow + label
     // Detached from selection: stops the click from ever reaching profile-item-main,
     // and never touches activeName/state -- exporting never changes what's selected.
     exportItemBtn.onclick = (e) => {
@@ -520,8 +546,35 @@ function renderProfileList() {
     };
     item.appendChild(exportItemBtn);
 
+    const deleteItemBtn = document.createElement('button');
+    deleteItemBtn.className = 'icon-btn small danger-icon';
+    deleteItemBtn.title = 'Delete "' + name + '"';
+    deleteItemBtn.textContent = '\u{1F5D1}'; // trash can glyph
+    // Also fully detached from selection/export -- deleting never changes activeName
+    // unless the deleted build happened to be the active one.
+    deleteItemBtn.onclick = (e) => {
+      e.stopPropagation();
+      deleteConfigByName(name);
+    };
+    item.appendChild(deleteItemBtn);
+
     list.appendChild(item);
   });
+}
+
+async function deleteConfigByName(name) {
+  const names = Object.keys(allConfigs);
+  if (names.length <= 1) { setStatus('Cannot delete the only configuration'); return; }
+  const ok = await showConfirm('Are you sure you want to delete "<span class="modal-target-name">' + name + '</span>" permanently?', { title: 'Delete configuration', confirmLabel: 'Delete', danger: true });
+  if (!ok) return;
+  delete allConfigs[name];
+  if (activeName === name) {
+    activeName = Object.keys(allConfigs)[0];
+    state = Object.assign(blankState(), allConfigs[activeName].state || {});
+  }
+  await persistConfigs();
+  renderAll();
+  setStatus('Deleted "' + name + '"');
 }
 
 function openBuildsOverlay() {
@@ -647,7 +700,16 @@ document.getElementById('resetAllBtn').onclick = () => {
   renderAll();
 };
 document.getElementById('randomizeBtn').onclick = () => {
-  allKeys().forEach(k => state[k] = Math.floor(Math.random() * (MAXV + 1)));
+  // A uniform per-node roll clusters tightly around the mean (law of large numbers).
+  // Pick one random "intensity" for this roll first, then jitter each node around it,
+  // so the resulting total actually spans the full 0-1096 range across repeated rolls.
+  const intensity = Math.random(); // 0 (empty build) .. 1 (near-maxed build)
+  allKeys().forEach(k => {
+    const jitter = (Math.random() - 0.5) * 4; // +/- up to 2 pips of noise
+    let v = Math.round(intensity * MAXV + jitter);
+    v = Math.max(0, Math.min(MAXV, v));
+    state[k] = v;
+  });
   renderAll();
 };
 
@@ -696,19 +758,6 @@ document.getElementById('newConfigBtn').onclick = async () => {
     setStatus('Started "' + name + '"');
     return;
   }
-};
-
-document.getElementById('deleteConfigBtn').onclick = async () => {
-  const names = Object.keys(allConfigs);
-  if (names.length <= 1) { setStatus('Cannot delete the only configuration'); return; }
-  const ok = await showConfirm('Are you sure you want to delete "<span class="modal-target-name">' + activeName + '</span>" permanently?', { title: 'Delete configuration', confirmLabel: 'Delete', danger: true });
-  if (!ok) return;
-  delete allConfigs[activeName];
-  activeName = Object.keys(allConfigs)[0];
-  state = Object.assign(blankState(), allConfigs[activeName].state || {});
-  await persistConfigs();
-  renderAll();
-  setStatus('Deleted');
 };
 
 document.getElementById('exportBtn').onclick = () => {
