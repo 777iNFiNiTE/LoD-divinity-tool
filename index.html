@@ -539,8 +539,12 @@ async function handleSignedIn(user) {
       state = Object.assign(blankState(), (allConfigs[activeName] || {}).state || {});
       setStatus('Loaded your saved builds');
     } else {
-      // First time this account has signed in: push whatever is currently
-      // on screen up as the start of their cloud library.
+      // Brand-new account with no cloud data yet: start clean. Do NOT carry
+      // over whatever happens to be sitting in memory (that could be another
+      // account's data from earlier in this session) -- new user, new slate.
+      allConfigs = { "My Build": { state: blankState(), updatedAt: new Date().toISOString() } };
+      activeName = "My Build";
+      state = blankState();
       await persistConfigs();
       setStatus('Cloud account created \u2014 your builds will now sync');
     }
@@ -551,9 +555,13 @@ async function handleSignedIn(user) {
   renderAll();
 }
 
-function handleSignedOut() {
+async function handleSignedOut() {
   currentUser = null;
   renderAuthUI();
+  // Don't leave the previous account's data on screen -- revert to whatever
+  // this browser's own local/guest state is (same as before any login).
+  await loadConfigs();
+  renderAll();
   setStatus('Signed out');
 }
 
