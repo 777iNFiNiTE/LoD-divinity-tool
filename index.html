@@ -555,15 +555,21 @@ async function handleSignedIn(user) {
   renderAll();
 }
 
-function handleSignedOut() {
-  // Force a hard reload rather than trying to manually reset every piece of
-  // in-memory state -- guarantees nothing from the signed-out account lingers
-  // on screen or in any cached variable.
-  window.location.reload();
-}
+let hasLoadedOnce = false;
 
-onAuthStateChanged(auth, (user) => {
-  if (user) handleSignedIn(user); else handleSignedOut();
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    await handleSignedIn(user);
+  } else if (!hasLoadedOnce) {
+    // Normal case: page just loaded and nobody is signed in yet.
+    // Just hydrate local/guest state -- do NOT reload here.
+    await loadConfigs();
+    renderAll();
+  }
+  // If a user WAS signed in and just explicitly signed out, the signOut
+  // button handler below takes care of reloading -- this listener doesn't
+  // need to do anything further in that case.
+  hasLoadedOnce = true;
 });
 
 function setStatus(msg) {
@@ -883,7 +889,9 @@ document.getElementById('signInBtn').onclick = () => {
   });
 };
 document.getElementById('signOutBtn').onclick = () => {
-  signOut(auth).catch((e) => console.error('sign-out failed', e));
+  signOut(auth)
+    .then(() => { window.location.reload(); })
+    .catch((e) => console.error('sign-out failed', e));
 };
 
 document.getElementById('toggleBuildsBtn').onclick = openBuildsOverlay;
@@ -949,8 +957,9 @@ document.getElementById('importFileInput').onchange = async (e) => {
 
 (async function init() {
   document.getElementById('totalSummary').textContent = 'Loading saved progress...';
-  await loadConfigs();
-  renderAll();
+  // Actual load now happens in the onAuthStateChanged listener above, which
+  // covers both the signed-out (local/guest) and signed-in (cloud) cases on
+  // first load -- this just shows an initial loading message.
 })();
 </script>
 
