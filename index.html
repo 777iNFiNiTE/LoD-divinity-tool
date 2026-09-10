@@ -555,14 +555,11 @@ async function handleSignedIn(user) {
   renderAll();
 }
 
-async function handleSignedOut() {
-  currentUser = null;
-  renderAuthUI();
-  // Don't leave the previous account's data on screen -- revert to whatever
-  // this browser's own local/guest state is (same as before any login).
-  await loadConfigs();
-  renderAll();
-  setStatus('Signed out');
+function handleSignedOut() {
+  // Force a hard reload rather than trying to manually reset every piece of
+  // in-memory state -- guarantees nothing from the signed-out account lingers
+  // on screen or in any cached variable.
+  window.location.reload();
 }
 
 onAuthStateChanged(auth, (user) => {
