@@ -118,8 +118,34 @@
     background: linear-gradient(180deg, #140b26 0%, #140b26 85%, rgba(20,11,38,0.97) 100%);
     border-bottom: 1px solid rgba(201,162,74,0.25);
     box-shadow: 0 8px 18px rgba(0,0,0,0.45);
-    padding-bottom: 6px;
+    padding-bottom: 0;
   }
+  .ui-panel.expanded { padding-bottom: 6px; }
+  .ui-panel.expanded .panel-compact { display: none; }
+
+  .panel-compact {
+    display: flex; align-items: center; gap: 10px;
+    max-width: 640px; margin: 0 auto; padding: 10px 14px;
+  }
+  .compact-title {
+    font-size: 15px; font-weight: 700; letter-spacing: 0.4px;
+    background: linear-gradient(180deg,#f5e6b8,#c9a24a);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    white-space: nowrap;
+  }
+  .compact-summary {
+    flex: 1 1 auto; min-width: 0; font-size: 12px; color: #b9a8d8;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .expand-btn, .collapse-btn {
+    flex: 0 0 auto; min-height: 36px; min-width: 36px;
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(201,162,74,0.4);
+    color: #f0e6c8; border-radius: 9px; font-size: 14px; cursor: pointer;
+  }
+  .collapse-row { display: flex; justify-content: center; margin-top: 4px; }
+  .collapse-btn { padding: 6px 16px; font-size: 12.5px; min-height: 34px; }
+
+  .panel-full.hidden { display: none; }
 
   .content-area { max-width: 640px; margin: 0 auto; padding: 0 10px; }
 
@@ -258,6 +284,14 @@
 <body>
 
 <div class="ui-panel" id="uiPanel">
+
+<div class="panel-compact" id="panelCompact">
+  <span class="compact-title">Mount Divinity</span>
+  <span class="compact-summary" id="compactSummary">My Build \u2014 0/1096</span>
+  <button class="expand-btn" id="expandBtn" title="Expand">&#9660;</button>
+</div>
+
+<div class="panel-full hidden" id="panelFull">
 <header>
   <h1>Mount Divinity</h1>
   <div class="summary" id="totalSummary">Loading...</div>
@@ -294,6 +328,12 @@
   <button id="resetAllBtn">&#8635; Reset All</button>
   <button id="randomizeBtn">&#127922; Randomize</button>
 </div>
+
+<div class="collapse-row">
+  <button class="collapse-btn" id="collapseBtn">&#9650; Collapse</button>
+</div>
+</div>
+
 </div>
 
 <div class="content-area">
@@ -783,6 +823,15 @@ function renderSummary() {
   const max = keys.length * MAXV;
   document.getElementById('totalSummary').textContent =
     activeName + ' \u2014 Total: ' + total + ' / ' + max + ' points across all paths';
+  document.getElementById('compactSummary').textContent =
+    activeName + ' \u2014 ' + total + '/' + max;
+}
+
+function setPanelExpanded(expanded) {
+  document.getElementById('uiPanel').classList.toggle('expanded', expanded);
+  document.getElementById('panelFull').classList.toggle('hidden', !expanded);
+  document.getElementById('expandBtn').innerHTML = expanded ? '&#9650;' : '&#9660;';
+  setTimeout(updatePanelHeightVar, 0);
 }
 
 function updatePanelHeightVar() {
@@ -957,6 +1006,8 @@ document.getElementById('importFileInput').onchange = async (e) => {
 
 (async function init() {
   document.getElementById('totalSummary').textContent = 'Loading saved progress...';
+  document.getElementById('expandBtn').onclick = () => setPanelExpanded(true);
+  document.getElementById('collapseBtn').onclick = () => setPanelExpanded(false);
   // Actual load now happens in the onAuthStateChanged listener above, which
   // covers both the signed-out (local/guest) and signed-in (cloud) cases on
   // first load -- this just shows an initial loading message.
