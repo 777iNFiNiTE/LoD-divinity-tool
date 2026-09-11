@@ -150,6 +150,7 @@
     display: flex; align-items: center; gap: 6px;
   }
   #toggleBuildsBtn:hover { background: rgba(255,255,255,0.1); }
+  .gtb-right-btn { margin-left: auto; }
   .count-chip {
     background: rgba(201,162,74,0.3); border-radius: 20px; padding: 1px 7px; font-size: 11px;
   }
@@ -363,7 +364,9 @@
   <button class="cfg-btn" id="toggleBuildsBtn">
     Builds <span class="count-chip" id="buildsCountChip">0</span>
   </button>
+  <button class="cfg-btn gtb-right-btn" id="newConfigBtn">New Configuration</button>
 </div>
+<input type="file" id="importFileInput" accept="application/json">
 
 <div class="ui-panel" id="uiPanel">
 
@@ -386,18 +389,6 @@
 <div class="name-warning" id="nameWarning"></div>
 
 <div class="panel-full hidden" id="panelFull">
-<div class="config-bar">
-  <div class="cfg-row">
-    <button class="cfg-btn primary" id="saveConfigBtn">Save</button>
-    <button class="cfg-btn" id="newConfigBtn">New Configuration</button>
-  </div>
-  <div class="cfg-row">
-    <button class="cfg-btn" id="exportBtn">Export Current</button>
-    <button class="cfg-btn" id="importBtn">Import</button>
-    <input type="file" id="importFileInput" accept="application/json">
-  </div>
-  <div class="cfg-status" id="cfgStatus"></div>
-</div>
 </div>
 
 </div>
@@ -686,6 +677,7 @@ onAuthStateChanged(auth, async (user) => {
 
 function setStatus(msg) {
   const el = document.getElementById('cfgStatus');
+  if (!el) return;
   el.textContent = msg;
   if (msg) setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 2500);
 }
@@ -966,7 +958,6 @@ async function saveCurrentConfig() {
   setStatus('Saved "' + newName + '" to the list');
 }
 
-document.getElementById('saveConfigBtn').onclick = saveCurrentConfig;
 document.getElementById('enterSaveBtn').onclick = saveCurrentConfig;
 
 document.getElementById('configNameInput').addEventListener('input', checkDuplicateName);
@@ -1000,10 +991,6 @@ document.getElementById('newConfigBtn').onclick = async () => {
   }
 };
 
-document.getElementById('exportBtn').onclick = () => {
-  exportStateAsFile(activeName, state);
-};
-
 function doSignIn() {
   signInWithPopup(auth, googleProvider).catch((e) => {
     console.error('sign-in failed', e);
@@ -1031,10 +1018,6 @@ document.getElementById('closeBuildsBtn').onclick = closeBuildsOverlay;
 document.getElementById('buildsOverlay').addEventListener('click', (e) => {
   if (e.target.id === 'buildsOverlay') closeBuildsOverlay();
 });
-
-document.getElementById('importBtn').onclick = () => {
-  document.getElementById('importFileInput').click();
-};
 
 document.getElementById('importFileInput').onchange = async (e) => {
   const file = e.target.files[0];
