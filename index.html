@@ -130,8 +130,25 @@
   .sections { padding-bottom: 76px; }
   #importFileInput { display: none; }
 
+  body { padding-top: 52px; }
+
+  .global-top-bar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+    display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+    gap: 8px; padding: 8px 10px;
+    background: #140b26; border-bottom: 1px solid rgba(201,162,74,0.25);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+  }
+  .gtb-left { display: flex; align-items: center; gap: 8px; min-width: 0; }
+  .gtb-center { display: flex; justify-content: center; }
+  .gtb-right { min-width: 0; }
+  #toggleBuildsBtn { display: flex; align-items: center; gap: 6px; }
+  .count-chip {
+    background: rgba(201,162,74,0.3); border-radius: 20px; padding: 1px 7px; font-size: 11px;
+  }
+
   .ui-panel {
-    position: sticky; top: 0; z-index: 50;
+    position: sticky; top: 52px; z-index: 50;
     background: linear-gradient(180deg, #140b26 0%, #140b26 85%, rgba(20,11,38,0.97) 100%);
     border-bottom: 1px solid rgba(201,162,74,0.25);
     box-shadow: 0 8px 18px rgba(0,0,0,0.45);
@@ -329,6 +346,23 @@
 </head>
 <body>
 
+<div class="global-top-bar" id="globalTopBar">
+  <div class="gtb-left" id="gtbLeft">
+    <button class="google-signin-btn" id="signInBtn">
+      <svg viewBox="0 0 48 48" width="16" height="16"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.9 32.9 29.4 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l5.7-5.7C34.5 6 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16 18.9 13 24 13c3.1 0 5.8 1.1 8 3l5.7-5.7C34.5 6 29.5 4 24 4c-7.5 0-14 4.2-17.7 10.7z"/><path fill="#4CAF50" d="M24 44c5.3 0 10.2-2 13.9-5.4l-6.4-5.4C29.4 34.7 26.8 36 24 36c-5.3 0-9.8-3.4-11.4-8.1l-6.5 5C9.9 39.7 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.4 5.4C39.9 37 44 31 44 24c0-1.3-.1-2.7-.4-3.5z"/></svg>
+      <span>Sign in with Google</span>
+    </button>
+    <button class="cfg-btn hidden" id="signOutBtn">Sign out</button>
+    <span class="auth-badge hidden" id="authUserBadge"></span>
+  </div>
+  <div class="gtb-center">
+    <button class="cfg-btn" id="toggleBuildsBtn">
+      Builds <span class="count-chip" id="buildsCountChip">0</span>
+    </button>
+  </div>
+  <div class="gtb-right"></div>
+</div>
+
 <div class="ui-panel" id="uiPanel">
 
 <div class="panel-top" id="panelTop">
@@ -338,39 +372,24 @@
 </div>
 
 <div class="action-row" id="actionRow">
-  <button class="google-icon-btn" id="compactAuthBtn" title="Sign in with Google">
-    <svg viewBox="0 0 48 48" width="20" height="20"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.9 32.9 29.4 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l5.7-5.7C34.5 6 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16 18.9 13 24 13c3.1 0 5.8 1.1 8 3l5.7-5.7C34.5 6 29.5 4 24 4c-7.5 0-14 4.2-17.7 10.7z"/><path fill="#4CAF50" d="M24 44c5.3 0 10.2-2 13.9-5.4l-6.4-5.4C29.4 34.7 26.8 36 24 36c-5.3 0-9.8-3.4-11.4-8.1l-6.5 5C9.9 39.7 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.4 5.4C39.9 37 44 31 44 24c0-1.3-.1-2.7-.4-3.5z"/></svg>
-  </button>
   <div class="action-row-center">
     <input type="text" id="configNameInput" placeholder="Configuration name">
-    <button class="cfg-btn primary enter-btn" id="enterSaveBtn" title="Save (Enter)">&#9166;</button>
+    <button class="cfg-btn primary enter-btn" id="enterSaveBtn" title="Save">&#9166; Save</button>
   </div>
   <div class="action-row-right">
-    <button class="icon-btn small" id="compactExportBtn" title="Export current">&#8681;</button>
-    <button class="icon-btn small" id="compactImportBtn" title="Import">&#8679;</button>
+    <button class="icon-btn small" id="compactExportBtn" title="Export current">&#8679;</button>
+    <button class="icon-btn small" id="compactImportBtn" title="Import">&#8681;</button>
   </div>
 </div>
 <div class="name-warning" id="nameWarning"></div>
 
 <div class="panel-full hidden" id="panelFull">
-<div class="auth-row">
-  <button class="google-signin-btn" id="signInBtn">
-    <svg viewBox="0 0 48 48" width="18" height="18"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.9 32.9 29.4 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3.1 0 5.8 1.1 8 3l5.7-5.7C34.5 6 29.5 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.7-.4-3.5z"/><path fill="#FF3D00" d="M6.3 14.7l6.6 4.8C14.5 16 18.9 13 24 13c3.1 0 5.8 1.1 8 3l5.7-5.7C34.5 6 29.5 4 24 4c-7.5 0-14 4.2-17.7 10.7z"/><path fill="#4CAF50" d="M24 44c5.3 0 10.2-2 13.9-5.4l-6.4-5.4C29.4 34.7 26.8 36 24 36c-5.3 0-9.8-3.4-11.4-8.1l-6.5 5C9.9 39.7 16.4 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.3-2.3 4.3-4.2 5.7l6.4 5.4C39.9 37 44 31 44 24c0-1.3-.1-2.7-.4-3.5z"/></svg>
-    <span>Sign in with Google</span>
-  </button>
-  <button class="cfg-btn hidden" id="signOutBtn">Sign out</button>
-  <span class="auth-badge hidden" id="authUserBadge"></span>
-</div>
-
 <div class="config-bar">
   <div class="cfg-row">
     <button class="cfg-btn primary" id="saveConfigBtn">Save</button>
-    <button class="cfg-btn" id="toggleBuildsBtn">
-      Builds <span class="count-chip" id="buildsCountChip">0</span>
-    </button>
+    <button class="cfg-btn" id="newConfigBtn">New Configuration</button>
   </div>
   <div class="cfg-row">
-    <button class="cfg-btn" id="newConfigBtn">New Configuration</button>
     <button class="cfg-btn" id="exportBtn">Export Current</button>
     <button class="cfg-btn" id="importBtn">Import</button>
     <input type="file" id="importFileInput" accept="application/json">
@@ -603,21 +622,16 @@ function renderAuthUI() {
   const badge = document.getElementById('authUserBadge');
   const signInBtn = document.getElementById('signInBtn');
   const signOutBtn = document.getElementById('signOutBtn');
-  const compactAuthBtn = document.getElementById('compactAuthBtn');
   if (currentUser) {
     signInBtn.classList.add('hidden');
     signOutBtn.classList.remove('hidden');
     badge.classList.remove('hidden');
     badge.textContent = currentUser.displayName || currentUser.email || 'Signed in';
-    compactAuthBtn.classList.add('signed-in');
-    compactAuthBtn.title = 'Signed in as ' + (currentUser.displayName || currentUser.email) + ' \u2014 tap to sign out';
   } else {
     signInBtn.classList.remove('hidden');
     signOutBtn.classList.add('hidden');
     badge.classList.add('hidden');
     badge.textContent = '';
-    compactAuthBtn.classList.remove('signed-in');
-    compactAuthBtn.title = 'Sign in with Google';
   }
 }
 
@@ -1002,9 +1016,6 @@ function doSignOut() {
 
 document.getElementById('signInBtn').onclick = doSignIn;
 document.getElementById('signOutBtn').onclick = doSignOut;
-document.getElementById('compactAuthBtn').onclick = () => {
-  if (currentUser) doSignOut(); else doSignIn();
-};
 
 document.getElementById('compactExportBtn').onclick = () => {
   exportStateAsFile(activeName, state);
