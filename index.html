@@ -102,16 +102,54 @@
   }
   .icon-ring img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .icon-ring.maxed { border-color: #6dff8a; box-shadow: 0 0 14px rgba(109,255,138,0.6), inset 0 0 8px rgba(0,0,0,0.5); }
-  .count-row { display: flex; align-items: center; gap: 3px; margin-top: 4px; }
-  .count-row button {
-    width: 22px; height: 22px; border-radius: 6px; border: 1px solid rgba(201,162,74,0.5);
-    background: rgba(255,255,255,0.1); color: #f0e6c8; font-size: 15px; font-weight: 700;
-    line-height: 1; padding: 0; cursor: pointer; user-select: none;
+
+  .value-btn {
+    margin-top: 5px; min-width: 46px; min-height: 30px;
+    padding: 5px 8px; border-radius: 8px; border: 1px solid rgba(201,162,74,0.5);
+    background: rgba(255,255,255,0.08); color: #78ff9a; font-size: 12px; font-weight: 700;
+    text-shadow: 0 0 4px rgba(0,0,0,0.8); cursor: pointer; user-select: none; white-space: nowrap;
   }
-  .count-row button:active { background: rgba(201,162,74,0.45); }
-  .count-row button:disabled { opacity: 0.25; cursor: default; }
-  .count-label { font-size: 11px; font-weight: 700; min-width: 26px; text-align: center; color: #78ff9a; text-shadow: 0 0 4px rgba(0,0,0,0.8); }
-  .count-label.maxed { color: #ffe27a; }
+  .value-btn:active { background: rgba(201,162,74,0.4); }
+  .value-btn.maxed { color: #ffe27a; border-color: #ffe27a; }
+
+  /* ---- Scroll-wheel value picker (iOS UIPickerView / Android NumberPicker style) ---- */
+  .picker-overlay {
+    position: fixed; inset: 0; background: rgba(5,3,10,0.72); backdrop-filter: blur(2px);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 1100; padding: 20px; gap: 14px;
+  }
+  .picker-overlay.hidden { display: none; }
+  .picker-sheet {
+    position: relative; width: 180px; height: 220px; overflow: hidden;
+    background: radial-gradient(ellipse at top, #241640 0%, #150c28 100%);
+    border: 1px solid rgba(201,162,74,0.45); border-radius: 18px;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.6), 0 0 24px rgba(120,90,200,0.15);
+  }
+  .picker-list {
+    height: 100%; overflow-y: scroll; scroll-snap-type: y mandatory;
+    padding: 90px 0; -webkit-overflow-scrolling: touch;
+  }
+  .picker-list::-webkit-scrollbar { display: none; }
+  .picker-option {
+    height: 44px; display: flex; align-items: center; justify-content: center;
+    scroll-snap-align: center; font-size: 17px; font-weight: 600; color: rgba(216,203,238,0.45);
+    cursor: pointer; transition: color 0.15s, font-size 0.15s;
+  }
+  .picker-option.selected { color: #ffe27a; font-size: 21px; font-weight: 800; }
+  .picker-highlight-ring {
+    position: absolute; left: 10px; right: 10px; top: 50%; transform: translateY(-50%);
+    height: 44px; border-top: 1px solid rgba(201,162,74,0.5); border-bottom: 1px solid rgba(201,162,74,0.5);
+    background: rgba(201,162,74,0.08); pointer-events: none; border-radius: 8px;
+  }
+  .picker-fade {
+    position: absolute; left: 0; right: 0; height: 60px; pointer-events: none; z-index: 2;
+  }
+  .picker-fade-top { top: 0; background: linear-gradient(180deg, #150c28 20%, transparent); }
+  .picker-fade-bottom { bottom: 0; background: linear-gradient(0deg, #150c28 20%, transparent); }
+  .picker-cancel {
+    background: rgba(255,255,255,0.08); border: 1px solid rgba(201,162,74,0.3); color: #d8cbee;
+    padding: 10px 22px; border-radius: 10px; font-size: 13.5px; cursor: pointer; min-height: 42px;
+  }
 
   .bottom-bar {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 60;
@@ -348,9 +386,7 @@
     .bottom-bar button { padding: 7px 9px; font-size: 11px; min-height: 38px; }
     .board { aspect-ratio: 1 / 1.75; }
     .node { width: 14%; }
-    .count-row { gap: 4px; margin-top: 5px; }
-    .count-row button { width: 24px; height: 24px; font-size: 16px; }
-    .count-label { font-size: 11.5px; min-width: 28px; }
+    .value-btn { min-width: 48px; min-height: 32px; font-size: 13px; padding: 6px 9px; }
     .global-top-bar { gap: 5px; padding: 7px 8px calc(7px + env(safe-area-inset-top, 0px)); }
     .google-signin-btn { padding: 6px 10px; font-size: 12px; min-height: 34px; }
     .google-signin-btn span { display: none; } /* icon-only on narrow screens: fits on one line */
@@ -455,6 +491,16 @@
       <button class="modal-btn-confirm" id="modalConfirmBtn">OK</button>
     </div>
   </div>
+</div>
+
+<div class="picker-overlay hidden" id="pickerOverlay">
+  <div class="picker-sheet">
+    <div class="picker-fade picker-fade-top"></div>
+    <div class="picker-highlight-ring"></div>
+    <div class="picker-list" id="pickerList"></div>
+    <div class="picker-fade picker-fade-bottom"></div>
+  </div>
+  <button class="picker-cancel" id="pickerCancelBtn">Cancel</button>
 </div>
 
 
@@ -863,29 +909,41 @@ function buildNode(n) {
   ring.appendChild(img);
   wrap.appendChild(ring);
 
-  const row = document.createElement('div');
-  row.className = 'count-row';
-
-  const minus = document.createElement('button');
-  minus.textContent = '\u2212';
-  minus.disabled = val <= 0;
-  minus.onclick = () => changeVal(n.key, -1);
-
-  const label = document.createElement('div');
-  label.className = 'count-label' + (val >= MAXV ? ' maxed' : '');
-  label.textContent = val + '/' + MAXV;
-
-  const plus = document.createElement('button');
-  plus.textContent = '+';
-  plus.disabled = val >= MAXV;
-  plus.onclick = () => changeVal(n.key, 1);
-
-  row.appendChild(minus);
-  row.appendChild(label);
-  row.appendChild(plus);
-  wrap.appendChild(row);
+  const valueBtn = document.createElement('button');
+  valueBtn.className = 'value-btn' + (val >= MAXV ? ' maxed' : '');
+  valueBtn.textContent = val + '/' + MAXV;
+  valueBtn.onclick = () => openPicker(n.key);
+  wrap.appendChild(valueBtn);
 
   return wrap;
+}
+
+function openPicker(key) {
+  const overlay = document.getElementById('pickerOverlay');
+  const list = document.getElementById('pickerList');
+  const current = state[key] || 0;
+  list.innerHTML = '';
+  for (let i = 0; i <= MAXV; i++) {
+    const opt = document.createElement('div');
+    opt.className = 'picker-option' + (i === current ? ' selected' : '');
+    opt.textContent = i + ' / ' + MAXV;
+    opt.onclick = () => {
+      state[key] = i;
+      renderAll();
+      closePicker();
+    };
+    list.appendChild(opt);
+  }
+  overlay.classList.remove('hidden');
+  // Scroll the current value into the centered "selected" slot.
+  requestAnimationFrame(() => {
+    const selected = list.querySelector('.picker-option.selected');
+    if (selected) selected.scrollIntoView({ block: 'center', behavior: 'instant' in document.documentElement.style ? 'instant' : 'auto' });
+  });
+}
+
+function closePicker() {
+  document.getElementById('pickerOverlay').classList.add('hidden');
 }
 
 function renderSections() {
@@ -953,13 +1011,6 @@ function renderAll() {
 }
 
 window.addEventListener('resize', updatePanelHeightVar);
-
-function changeVal(key, delta) {
-  const nv = Math.min(MAXV, Math.max(0, (state[key]||0) + delta));
-  if (nv === state[key]) return;
-  state[key] = nv;
-  renderAll();
-}
 
 document.getElementById('maxAllBtn').onclick = () => {
   allKeys().forEach(k => state[k] = MAXV);
@@ -1050,6 +1101,11 @@ document.getElementById('compactExportBtn').onclick = () => {
 document.getElementById('compactImportBtn').onclick = () => {
   document.getElementById('importFileInput').click();
 };
+
+document.getElementById('pickerCancelBtn').onclick = closePicker;
+document.getElementById('pickerOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'pickerOverlay') closePicker();
+});
 
 document.getElementById('toggleBuildsBtn').onclick = openBuildsOverlay;
 document.getElementById('closeBuildsBtn').onclick = closeBuildsOverlay;
